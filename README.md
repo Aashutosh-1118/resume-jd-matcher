@@ -1,6 +1,6 @@
-# Resume ↔ JD Matcher
+# Resume Matcher & Candidate Screener
 
-An AI-powered resume screening tool with two modes: a **Student** mode where a candidate checks their own resume against a job description, and an **HR** mode where a recruiter uploads multiple resumes and gets a ranked, exportable shortlist.
+An AI-powered tool with two modes: a **Student** mode that matches a candidate's resume against a job description, and an **HR** mode that analyzes and screens multiple resumes to produce a ranked shortlist.
 
 Both modes run on the same underlying scoring engine — the only difference is how many resumes get processed and how the results are presented.
 
