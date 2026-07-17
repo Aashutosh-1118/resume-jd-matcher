@@ -13,8 +13,10 @@ from docx import Document
 load_dotenv()
 my_api_key = os.getenv("GROQ_API_KEY")
 if not my_api_key:
-    raise ValueError("GROQ_API_KEY not found. Add it to your .env file locally, "
-        "or to Streamlit Cloud's app secrets if deployed.")
+    raise ValueError(
+        "GROQ_API_KEY not found. Add it to your .env file locally, "
+        "or to Streamlit Cloud's app secrets if deployed."
+    )
 
 client = Groq(api_key=my_api_key)
 model = "openai/gpt-oss-120b"
@@ -236,13 +238,36 @@ The "details" field must include these keys:
 - experience_requirement_met (true/false)
 - verdict (short string, 1-2 sentences)
 
+IMPORTANT scope rule:
+- Only consider concrete TECHNICAL skills, tools, languages,
+  frameworks, platforms, and domain-specific buzzwords (e.g.
+  "Python", "SQL", "AWS", "React", "machine learning", "cloud
+  technologies").
+- COMPLETELY IGNORE soft skills, behavioral qualities, or generic
+  phrases such as "communication", "verbal skills", "written
+  communication", "problem-solving", "teamwork", or "internships" as
+  a standalone item. Do not include these in matching_skills or
+  missing_skills, and do not let their presence or absence affect the
+  score at all.
+
+IMPORTANT: "score" must be a number from 0 to 100 representing a
+percentage - for example 87, NOT 0.87. Do not return a decimal
+fraction between 0 and 1.
+
 Keep it concise and easy to read. Do not invent skills or experience
 that aren't present in the resume.
 """
     messages = [{"role": "user", "content": prompt}]
     response = _call_groq(messages)
     data = json.loads(response.choices[0].message.content)
-    return MatchResult(**data)
+    match_result = MatchResult(**data)
+
+    # Safety net: if the model still returns a 0-1 fraction instead of
+    # a 0-100 percentage, correct it here rather than showing "0.8%".
+    if 0 < match_result.score <= 1:
+        match_result.score = round(match_result.score * 100, 1)
+
+    return match_result
 
 
 def analyze_resume(job: JobD, resume_file) -> dict:
