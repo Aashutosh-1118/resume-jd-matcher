@@ -44,7 +44,7 @@ resume-jd-matcher/
 ## Running it locally
 
 ```bash
-git clone https://github.com/<your-username>/resume-jd-matcher.git
+git clone https://github.com/Aashutosh-1118/resume-jd-matcher.git
 cd resume-jd-matcher
 uv add streamlit groq python-dotenv pydantic pypdf python-docx pandas
 ```
@@ -56,7 +56,7 @@ GROQ_API_KEY=your_groq_api_key_here
 
 Run the app:
 ```bash
-uv run streamlit run app.py
+streamlit run app.py
 ```
 
 ## Live demo
