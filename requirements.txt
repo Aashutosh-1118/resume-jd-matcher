@@ -1,0 +1,8 @@
+streamlit
+groq
+python-dotenv
+pydantic
+pypdf
+python-docx
+pandas
+ 
