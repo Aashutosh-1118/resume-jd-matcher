@@ -227,7 +227,7 @@ else:
         results, errors = [], []
         total = len(resume_files)
 
-        with ThreadPoolExecutor(max_workers=3) as executor:
+        with ThreadPoolExecutor(max_workers=1) as executor:
             futures = {executor.submit(analyze_resume, job, f): f for f in resume_files}
             done = 0
             for future in as_completed(futures):
